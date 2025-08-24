@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" class="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Home — AutoDropship Pro</title>
+  <meta name="description" content="A fully automated storefront that syncs products from partner feeds and deploys to GitHub Pages daily.">
+  <link rel="canonical" href="https://<YOUR-USERNAME>.github.io/<YOUR-REPO>">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <meta property="og:title" content="Home — AutoDropship Pro">
+  <meta property="og:description" content="A fully automated storefront that syncs products from partner feeds and deploys to GitHub Pages daily.">
+  <meta property="og:image" content="/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "AutoDropship Pro", "url": "https://<YOUR-USERNAME>.github.io/<YOUR-REPO>", "description": "A fully automated storefront that syncs products from partner feeds and deploys to GitHub Pages daily."}</script>
+  <script>
+    // dark-mode toggle (persists)
+    (function(){
+      const cls = localStorage.getItem("theme") || "";
+      if(cls==='dark') document.documentElement.classList.add('dark');
+      window.toggleTheme = function(){
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark')?'dark':'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <a class="brand" href="/"><img src="/assets/logo.svg" alt="logo"> AutoDropship Pro</a>
+      <nav>
+        <a href="/products/index.html">Products</a>
+        <a href="/blog/index.html">Blog</a>
+        <button class="toggle" onclick="toggleTheme()">🌗</button>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="hero">
+  <h1>Automated affiliate/dropship storefront — updated daily</h1>
+  <p class="muted">A fully automated storefront that syncs products from partner feeds and deploys to GitHub Pages daily.</p>
+  <div class="search">
+    <input id="q" type="search" placeholder="Search products (title, tags)">
+    <a class="btn secondary" href="/products/index.html">Browse all</a>
+  </div>
+</section>
+
+<h2>Featured</h2>
+<div class="grid" id="featured">
+  
+</div>
+
+<h2>Latest Posts</h2>
+<div class="grid">
+  
+  <div class="card">
+    <h3><a href="/blog/welcome.html">Welcome to AutoDropship Pro</a></h3>
+    <p class="muted">How the store works.</p>
+    <a class="btn secondary" href="/blog/welcome.html">Read</a>
+  </div>
+  
+</div>
+
+<script>
+document.getElementById('q').addEventListener('keydown', function(e){
+  if(e.key==='Enter'){
+    const v = encodeURIComponent(this.value.trim());
+    if(v) window.location.href = '/products/index.html?q='+v;
+  }
+});
+</script>
+
+  </main>
+  <footer>
+    <div class="container">© 2025 • AutoDropship Pro • <a href="mailto:you@example.com">you@example.com</a></div>
+  </footer>
+</body>
+</html>
