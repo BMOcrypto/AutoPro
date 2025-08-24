@@ -1,0 +1,41 @@
+[
+  {
+    "id": "DEMO-100",
+    "title": "Wireless ANC Headphones",
+    "description": "Over-ear Bluetooth headphones with active noise canceling and 30h battery.",
+    "price": 79.99,
+    "image": "https://via.placeholder.com/800x600.png?text=Headphones",
+    "link": "https://example-vendor.com/products/anc-headphones?affid=YOURID",
+    "tags": [
+      "audio",
+      "wireless",
+      "deal"
+    ]
+  },
+  {
+    "id": "DEMO-200",
+    "title": "4K Action Camera",
+    "description": "Waterproof 4K action cam with accessories kit and dual batteries.",
+    "price": 59.0,
+    "image": "https://via.placeholder.com/800x600.png?text=Action+Cam",
+    "link": "https://example-vendor.com/products/4k-action-cam?affid=YOURID",
+    "tags": [
+      "camera",
+      "outdoors",
+      "4k"
+    ]
+  },
+  {
+    "id": "DEMO-300",
+    "title": "USB-C GaN Charger 65W",
+    "description": "Compact GaN fast charger with dual USB-C and USB-A ports.",
+    "price": 24.95,
+    "image": "https://via.placeholder.com/800x600.png?text=GaN+Charger",
+    "link": "https://example-vendor.com/products/gan-65w?affid=YOURID",
+    "tags": [
+      "charger",
+      "usb-c",
+      "gan"
+    ]
+  }
+]

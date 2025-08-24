@@ -1,0 +1,10 @@
+<h1>Blog</h1>
+<div class="grid">
+  {% for a in posts %}
+  <div class="card">
+    <h3><a href="/blog/{{ a.slug }}.html">{{ a.title }}</a></h3>
+    <p class="muted">{{ a.summary }}</p>
+    <a class="btn secondary" href="/blog/{{ a.slug }}.html">Read</a>
+  </div>
+  {% endfor %}
+</div>

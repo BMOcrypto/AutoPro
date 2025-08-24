@@ -1,0 +1,41 @@
+<section class="hero">
+  <h1>{{ site.tagline }}</h1>
+  <p class="muted">{{ seo.description }}</p>
+  <div class="search">
+    <input id="q" type="search" placeholder="Search products (title, tags)">
+    <a class="btn secondary" href="/products/index.html">Browse all</a>
+  </div>
+</section>
+
+<h2>Featured</h2>
+<div class="grid" id="featured">
+  {% for p in products[:8] %}
+  <div class="card">
+    <img src="{{ p.thumbnail_url }}" alt="{{ p.title }}">
+    <h3><a href="/products/{{ p.slug }}.html">{{ p.title }}</a></h3>
+    <div class="muted">{% for t in p.tags %}<span class="tag">#{{ t }}</span>{% endfor %}</div>
+    <div class="price">{{ site.currency }}{{ p.price }}</div>
+    <a class="btn" href="{{ p.product_url }}" target="_blank" rel="noopener">Buy</a>
+  </div>
+  {% endfor %}
+</div>
+
+<h2>Latest Posts</h2>
+<div class="grid">
+  {% for a in posts %}
+  <div class="card">
+    <h3><a href="/blog/{{ a.slug }}.html">{{ a.title }}</a></h3>
+    <p class="muted">{{ a.summary }}</p>
+    <a class="btn secondary" href="/blog/{{ a.slug }}.html">Read</a>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+document.getElementById('q').addEventListener('keydown', function(e){
+  if(e.key==='Enter'){
+    const v = encodeURIComponent(this.value.trim());
+    if(v) window.location.href = '/products/index.html?q='+v;
+  }
+});
+</script>

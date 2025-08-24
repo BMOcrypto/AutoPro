@@ -1,0 +1,6 @@
+<article>
+  <h1>{{ post.title }}</h1>
+  <p class="muted">{{ post.date }}</p>
+  <div>{{ post.body_html|safe }}</div>
+  <p class="muted">Tags: {% for t in post.tags %}<span class="tag">#{{ t }}</span>{% endfor %}</p>
+</article>

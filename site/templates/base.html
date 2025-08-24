@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" class="{{ 'dark' if site.dark else '' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page_title }} — {{ site.name }}</title>
+  <meta name="description" content="{{ meta_description }}">
+  <link rel="canonical" href="{{ canonical }}">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <meta property="og:title" content="{{ page_title }} — {{ site.name }}">
+  <meta property="og:description" content="{{ meta_description }}">
+  <meta property="og:image" content="{{ seo.og_image }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{{ jsonld|safe }}</script>
+  <script>
+    // dark-mode toggle (persists)
+    (function(){
+      const cls = localStorage.getItem("theme") || "{{ 'dark' if site.dark else 'light' }}";
+      if(cls==='dark') document.documentElement.classList.add('dark');
+      window.toggleTheme = function(){
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark')?'dark':'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <a class="brand" href="/"><img src="/assets/logo.svg" alt="logo"> {{ site.name }}</a>
+      <nav>
+        <a href="/products/index.html">Products</a>
+        <a href="/blog/index.html">Blog</a>
+        <button class="toggle" onclick="toggleTheme()">🌗</button>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    {{ content|safe }}
+  </main>
+  <footer>
+    <div class="container">© {{ year }} • {{ site.name }} • <a href="mailto:{{ site.email }}">{{ site.email }}</a></div>
+  </footer>
+</body>
+</html>

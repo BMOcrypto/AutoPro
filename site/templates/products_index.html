@@ -1,0 +1,26 @@
+<h1>All Products</h1>
+<p class="muted">We redirect you to partner sites for checkout.</p>
+<div class="grid" id="plist">
+  {% for p in products %}
+  <div class="card" data-title="{{ p.title|lower }}" data-tags="{{ '-'.join(p.tags) }}">
+    <img src="{{ p.thumbnail_url }}" alt="{{ p.title }}">
+    <h3><a href="/products/{{ p.slug }}.html">{{ p.title }}</a></h3>
+    <div class="muted">{% for t in p.tags %}<span class="tag">#{{ t }}</span>{% endfor %}</div>
+    <div class="price">{{ site.currency }}{{ p.price }}</div>
+    <a class="btn" href="{{ p.product_url }}" target="_blank" rel="noopener">Buy</a>
+  </div>
+  {% endfor %}
+</div>
+<script>
+(function(){
+  const u = new URL(window.location.href);
+  const q = (u.searchParams.get('q')||'').toLowerCase();
+  if(!q) return;
+  const cards = document.querySelectorAll('#plist .card');
+  cards.forEach(c => {
+    const t = c.getAttribute('data-title');
+    const tg = c.getAttribute('data-tags');
+    if(!(t.includes(q) || tg.includes(q))) c.style.display='none';
+  });
+})();
+</script>

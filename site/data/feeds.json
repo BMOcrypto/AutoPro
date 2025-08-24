@@ -1,0 +1,20 @@
+{
+  "sources": [
+    {
+      "name": "Demo Feed",
+      "type": "json",
+      "url": "site/data/demo_feed.json",
+      "mapping": {
+        "sku": "id",
+        "title": "title",
+        "description": "description",
+        "price": "price",
+        "thumbnail_url": "image",
+        "product_url": "link",
+        "tags": "tags"
+      },
+      "status": "active",
+      "default_publish_date": "today"
+    }
+  ]
+}

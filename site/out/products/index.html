@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" class="">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Products — AutoDropship Pro</title>
+  <meta name="description" content="Browse all products">
+  <link rel="canonical" href="https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/products/index.html">
+  <link rel="stylesheet" href="/assets/styles.css">
+  <meta property="og:title" content="Products — AutoDropship Pro">
+  <meta property="og:description" content="Browse all products">
+  <meta property="og:image" content="/assets/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Store", "name": "AutoDropship Pro", "url": "https://<YOUR-USERNAME>.github.io/<YOUR-REPO>", "description": "A fully automated storefront that syncs products from partner feeds and deploys to GitHub Pages daily."}</script>
+  <script>
+    // dark-mode toggle (persists)
+    (function(){
+      const cls = localStorage.getItem("theme") || "";
+      if(cls==='dark') document.documentElement.classList.add('dark');
+      window.toggleTheme = function(){
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', document.documentElement.classList.contains('dark')?'dark':'light');
+      }
+    })();
+  </script>
+</head>
+<body>
+  <header>
+    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
+      <a class="brand" href="/"><img src="/assets/logo.svg" alt="logo"> AutoDropship Pro</a>
+      <nav>
+        <a href="/products/index.html">Products</a>
+        <a href="/blog/index.html">Blog</a>
+        <button class="toggle" onclick="toggleTheme()">🌗</button>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <h1>All Products</h1>
+<p class="muted">We redirect you to partner sites for checkout.</p>
+<div class="grid" id="plist">
+  
+  <div class="card" data-title="" data-tags="">
+    <img src="https://via.placeholder.com/800x600.png?text=Headphones" alt="Wireless ANC Headphones">
+    <h3><a href="/products/demo-100-wireless-anc-headphones.html">Wireless ANC Headphones</a></h3>
+    <div class="muted"><span class="tag">#audio</span><span class="tag">#wireless</span><span class="tag">#deal</span></div>
+    <div class="price">$79.99</div>
+    <a class="btn" href="https://example-vendor.com/products/anc-headphones?affid=YOURID" target="_blank" rel="noopener">Buy</a>
+  </div>
+  
+  <div class="card" data-title="" data-tags="">
+    <img src="https://via.placeholder.com/800x600.png?text=Action+Cam" alt="4K Action Camera">
+    <h3><a href="/products/demo-200-4k-action-camera.html">4K Action Camera</a></h3>
+    <div class="muted"><span class="tag">#camera</span><span class="tag">#outdoors</span><span class="tag">#4k</span></div>
+    <div class="price">$59.00</div>
+    <a class="btn" href="https://example-vendor.com/products/4k-action-cam?affid=YOURID" target="_blank" rel="noopener">Buy</a>
+  </div>
+  
+  <div class="card" data-title="" data-tags="">
+    <img src="https://via.placeholder.com/800x600.png?text=GaN+Charger" alt="USB-C GaN Charger 65W">
+    <h3><a href="/products/demo-300-usb-c-gan-charger-65w.html">USB-C GaN Charger 65W</a></h3>
+    <div class="muted"><span class="tag">#charger</span><span class="tag">#usb-c</span><span class="tag">#gan</span></div>
+    <div class="price">$24.95</div>
+    <a class="btn" href="https://example-vendor.com/products/gan-65w?affid=YOURID" target="_blank" rel="noopener">Buy</a>
+  </div>
+  
+</div>
+<script>
+(function(){
+  const u = new URL(window.location.href);
+  const q = (u.searchParams.get('q')||'').toLowerCase();
+  if(!q) return;
+  const cards = document.querySelectorAll('#plist .card');
+  cards.forEach(c => {
+    const t = c.getAttribute('data-title');
+    const tg = c.getAttribute('data-tags');
+    if(!(t.includes(q) || tg.includes(q))) c.style.display='none';
+  });
+})();
+</script>
+
+  </main>
+  <footer>
+    <div class="container">© 2025 • AutoDropship Pro • <a href="mailto:you@example.com">you@example.com</a></div>
+  </footer>
+</body>
+</html>

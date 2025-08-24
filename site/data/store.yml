@@ -1,0 +1,12 @@
+site:
+  name: "AutoDropship Pro"
+  tagline: "Automated affiliate/dropship storefront — updated daily"
+  url: "https://<YOUR-USERNAME>.github.io/<YOUR-REPO>"
+  email: "you@example.com"
+  currency: "$"
+  brand_color: "#0ea5e9"
+  dark: true
+seo:
+  description: "A fully automated storefront that syncs products from partner feeds and deploys to GitHub Pages daily."
+  twitter: ""
+  og_image: "/assets/og.png"

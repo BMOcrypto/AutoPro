@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <url><loc>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/</loc></url>
+
+  <url><loc>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/products/index.html</loc></url>
+
+  <url><loc>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/blog/index.html</loc></url>
+
+  <url><loc>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/products/demo-100-wireless-anc-headphones.html</loc></url>
+
+  <url><loc>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/products/demo-200-4k-action-camera.html</loc></url>
+
+  <url><loc>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/products/demo-300-usb-c-gan-charger-65w.html</loc></url>
+
+  <url><loc>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/blog/welcome.html</loc></url>
+
+</urlset>

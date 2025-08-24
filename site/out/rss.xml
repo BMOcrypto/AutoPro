@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>AutoDropship Pro</title>
+  <link>https://<YOUR-USERNAME>.github.io/<YOUR-REPO></link>
+  <description>A fully automated storefront that syncs products from partner feeds and deploys to GitHub Pages daily.</description>
+  
+  <item>
+    <title>Welcome to AutoDropship Pro</title>
+    <link>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/blog/welcome.html</link>
+    <description><![CDATA[ How the store works. ]]></description>
+    <pubDate>Wed, 20 Aug 2025 00:00:00 +0000</pubDate>
+    <guid>https://<YOUR-USERNAME>.github.io/<YOUR-REPO>/blog/welcome.html</guid>
+  </item>
+  
+</channel>
+</rss>

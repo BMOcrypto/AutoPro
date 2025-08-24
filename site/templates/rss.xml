@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>{{ site.name }}</title>
+  <link>{{ site.url }}</link>
+  <description>{{ seo.description }}</description>
+  {% for a in posts %}
+  <item>
+    <title>{{ a.title }}</title>
+    <link>{{ site.url }}/blog/{{ a.slug }}.html</link>
+    <description><![CDATA[ {{ a.summary }} ]]></description>
+    <pubDate>{{ a.rfc822 }}</pubDate>
+    <guid>{{ site.url }}/blog/{{ a.slug }}.html</guid>
+  </item>
+  {% endfor %}
+</channel>
+</rss>

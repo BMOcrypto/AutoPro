@@ -1,0 +1,8 @@
+<article>
+  <h1>{{ product.title }}</h1>
+  <img src="{{ product.thumbnail_url }}" alt="{{ product.title }}">
+  <p>{{ product.description }}</p>
+  <p><strong class="price">{{ site.currency }}{{ product.price }}</strong></p>
+  <p><a class="btn" href="{{ product.product_url }}" target="_blank" rel="noopener">Buy on Vendor</a></p>
+  <p class="muted">Tags: {% for t in product.tags %}<span class="tag">#{{ t }}</span>{% endfor %}</p>
+</article>
