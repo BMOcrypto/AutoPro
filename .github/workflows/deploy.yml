@@ -1,16 +1,19 @@
-name: Fetch, Build & Deploy (AutoDropship Pro)
+name: Fetch Build & Deploy (AutoDropship)
 
 on:
   push:
-    branches: [ main ]
+    branches: ["main"]
   schedule:
-    - cron: "17 3 * * *"  # daily 03:17 UTC
+    - cron: "17 3 * * *"   # daily 03:17 UTC
+  workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -19,20 +22,30 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
-      - name: Install deps
-        run: pip install pyyaml
+      - name: Install pip deps
+        run: pip install --upgrade pip && pip install pyyaml
 
-      - name: Fetch feeds
+      - name: Fetch feeds (generate site/data/products.csv)
         run: python scripts/fetch_feeds.py
 
       - name: Build site
         working-directory: ./site
         run: python build.py
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Upload pages artifact
+        uses: actions/upload-pages-artifact@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site/out
+          path: ./site/out
+
+  deploy:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v1
+
