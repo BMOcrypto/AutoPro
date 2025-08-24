@@ -1,8 +1,230 @@
-<article>
-  <h1>{{ product.title }}</h1>
-  <img src="{{ product.thumbnail_url }}" alt="{{ product.title }}">
-  <p>{{ product.description }}</p>
-  <p><strong class="price">{{ site.currency }}{{ product.price }}</strong></p>
-  <p><a class="btn" href="{{ product.product_url }}" target="_blank" rel="noopener">Buy on Vendor</a></p>
-  <p class="muted">Tags: {% for t in product.tags %}<span class="tag">#{{ t }}</span>{% endfor %}</p>
+<!-- Breadcrumbs -->
+<nav class="mb-lg" aria-label="Breadcrumb">
+  <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: var(--text-sm);">
+    <a href="/" style="color: var(--muted);">Home</a>
+    <span>→</span>
+    <a href="/products/index.html" style="color: var(--muted);">Products</a>
+    <span>→</span>
+    <span style="color: var(--ink);">{{ product.title }}</span>
+  </div>
+</nav>
+
+<!-- Product Details -->
+<article style="max-width: none;">
+  <div class="grid grid-2" style="gap: 3rem; align-items: start;">
+    
+    <!-- Product Image -->
+    <div>
+      <div class="card" style="padding: 0; overflow: hidden;">
+        <img src="{{ product.thumbnail_url }}" 
+             alt="{{ product.title }}" 
+             style="width: 100%; height: 400px; object-fit: cover; margin: 0; border-radius: var(--radius-lg);">
+      </div>
+      
+      <!-- Image Gallery Placeholder (for future enhancement) -->
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <div class="card" style="width: 60px; height: 60px; padding: 0; opacity: 0.6;">
+          <img src="{{ product.thumbnail_url }}" alt="Thumbnail" style="width: 100%; height: 100%; object-fit: cover; margin: 0;">
+        </div>
+        <!-- Add more thumbnails here if available -->
+      </div>
+    </div>
+    
+    <!-- Product Information -->
+    <div>
+      <div class="mb-md">
+        {% for tag in product.tags[:3] %}
+        <span class="tag">#{{ tag }}</span>
+        {% endfor %}
+      </div>
+      
+      <h1 style="margin-bottom: 1rem;">{{ product.title }}</h1>
+      
+      <div class="price" style="font-size: 2.5rem; margin-bottom: 1.5rem;">
+        ${{ product.price }}
+      </div>
+      
+      <p style="font-size: 1.125rem; line-height: 1.7; margin-bottom: 2rem; color: var(--ink-secondary);">
+        {{ product.description }}
+      </p>
+      
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <a class="btn large" 
+           href="{{ product.product_url }}" 
+           target="_blank" 
+           rel="noopener nofollow"
+           style="flex: 1; min-width: 200px;">
+          🛒 Buy Now on Vendor Site
+        </a>
+        <button class="btn secondary large" onclick="shareProduct()" style="min-width: 120px;">
+          📤 Share
+        </button>
+      </div>
+      
+      <!-- Product Features/Benefits -->
+      <div class="card" style="background: var(--bg-secondary); margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;">✨ Why Buy This Product?</h3>
+        <ul style="margin: 0; padding-left: 1.5rem; color: var(--ink-secondary);">
+          <li>Secure checkout through trusted vendor</li>
+          <li>Verified product quality and authenticity</li>
+          <li>Vendor warranty and customer support</li>
+          <li>Fast shipping and reliable delivery</li>
+        </ul>
+      </div>
+      
+      <!-- Trust Indicators -->
+      <div class="grid grid-2" style="gap: 1rem;">
+        <div class="card text-center" style="padding: 1rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">🔐</div>
+          <small class="muted">Secure Payment</small>
+        </div>
+        <div class="card text-center" style="padding: 1rem;">
+          <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">⚡</div>
+          <small class="muted">Fast Delivery</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Product Details Section -->
+  <div style="margin-top: 3rem;">
+    <h2>Product Details</h2>
+    <div class="card">
+      <div class="grid grid-2" style="gap: 2rem;">
+        <div>
+          <h4 style="margin-bottom: 1rem;">Specifications</h4>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 0.5rem 0; color: var(--muted); width: 40%;">SKU</td>
+              <td style="padding: 0.5rem 0;">{{ product.sku }}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 0.5rem 0; color: var(--muted);">Category</td>
+              <td style="padding: 0.5rem 0;">{{ product.tags[0]|title if product.tags else 'General' }}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 0.5rem 0; color: var(--muted);">Status</td>
+              <td style="padding: 0.5rem 0;">
+                <span class="tag" style="background: var(--success-light); color: var(--success);">
+                  ✓ In Stock
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div>
+          <h4 style="margin-bottom: 1rem;">Purchase Information</h4>
+          <p class="muted" style="line-height: 1.6;">
+            This product is sold by our trusted partner. When you click "Buy Now", you'll be redirected to their secure checkout page. All transactions, shipping, and customer service are handled directly by the vendor.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </article>
+
+<!-- Related Products (if you want to add this feature) -->
+<section style="margin-top: 4rem;">
+  <h2>You Might Also Like</h2>
+  <div id="related-products" class="grid grid-3">
+    <!-- Related products would be populated here -->
+    <div class="text-center" style="grid-column: 1 / -1;">
+      <p class="muted">Loading related products...</p>
+    </div>
+  </div>
+</section>
+
+<!-- Structured Data for SEO -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title }}",
+  "description": "{{ product.description }}",
+  "image": "{{ product.thumbnail_url }}",
+  "sku": "{{ product.sku }}",
+  "offers": {
+    "@type": "Offer",
+    "price": "{{ product.price }}",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock",
+    "url": "{{ product.product_url }}"
+  }
+}
+</script>
+
+<script>
+// Product page functionality
+(function() {
+  // Share functionality
+  window.shareProduct = function() {
+    const productData = {
+      title: '{{ product.title }}',
+      text: '{{ product.description }}',
+      url: window.location.href
+    };
+    
+    // Try native Web Share API first
+    if (navigator.share) {
+      navigator.share(productData).catch(err => console.log('Error sharing:', err));
+    } else {
+      // Fallback to clipboard
+      const shareText = `Check out ${productData.title}: ${productData.url}`;
+      
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareText).then(() => {
+          alert('Product link copied to clipboard!');
+        }).catch(() => {
+          fallbackShare(shareText);
+        });
+      } else {
+        fallbackShare(shareText);
+      }
+    }
+  };
+  
+  // Fallback share method
+  function fallbackShare(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    alert('Product link copied to clipboard!');
+  }
+  
+  // Track product view (placeholder for analytics)
+  function trackProductView() {
+    // Add your analytics tracking here
+    console.log('Product viewed:', '{{ product.title }}');
+  }
+  
+  // Track buy button click
+  document.querySelector('.btn[href*="' + '{{ product.product_url|replace("'", "\\'") }}' + '"]').addEventListener('click', function() {
+    // Add conversion tracking here
+    console.log('Buy button clicked for:', '{{ product.title }}');
+  });
+  
+  // Load related products (placeholder)
+  function loadRelatedProducts() {
+    // This would typically fetch products with similar tags
+    const relatedContainer = document.getElementById('related-products');
+    
+    // Simulate loading
+    setTimeout(() => {
+      relatedContainer.innerHTML = `
+        <div class="card text-center" style="grid-column: 1 / -1;">
+          <p class="muted">Related products feature coming soon!</p>
+          <a href="/products/index.html?q={{ product.tags[0] if product.tags else 'featured' }}" class="btn secondary">
+            Browse {{ product.tags[0]|title if product.tags else 'Featured' }} Products
+          </a>
+        </div>
+      `;
+    }, 1000);
+  }
+  
+  // Initialize
+  trackProductView();
+  loa

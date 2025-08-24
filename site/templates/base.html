@@ -6,40 +6,148 @@
   <title>{{ page_title }} — {{ site.name }}</title>
   <meta name="description" content="{{ meta_description }}">
   <link rel="canonical" href="{{ canonical }}">
+  
+  <!-- Preload fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
   <link rel="stylesheet" href="/assets/styles.css">
+  
+  <!-- SEO & Social -->
   <meta property="og:title" content="{{ page_title }} — {{ site.name }}">
   <meta property="og:description" content="{{ meta_description }}">
   <meta property="og:image" content="{{ seo.og_image }}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="{{ canonical }}">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page_title }} — {{ site.name }}">
+  <meta name="twitter:description" content="{{ meta_description }}">
+  <meta name="twitter:image" content="{{ seo.og_image }}">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+  
+  <!-- Structured Data -->
   <script type="application/ld+json">{{ jsonld|safe }}</script>
+  
+  <!-- Theme Script -->
   <script>
-    // dark-mode toggle (persists)
+    // Enhanced dark mode toggle with system preference detection
     (function(){
-      const cls = localStorage.getItem("theme") || "{{ 'dark' if site.dark else 'light' }}";
-      if(cls==='dark') document.documentElement.classList.add('dark');
-      window.toggleTheme = function(){
-        document.documentElement.classList.toggle('dark');
-        localStorage.setItem('theme', document.documentElement.classList.contains('dark')?'dark':'light');
+      const getInitialTheme = () => {
+        const stored = localStorage.getItem("theme");
+        if (stored) return stored;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      
+      const theme = getInitialTheme();
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
       }
+      
+      // System theme change listener
+      window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
+        if (!localStorage.getItem("theme")) {
+          if (e.matches) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+      });
+      
+      window.toggleTheme = function() {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+      };
     })();
   </script>
 </head>
 <body>
+  <!-- Header -->
   <header>
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;">
-      <a class="brand" href="/"><img src="/assets/logo.svg" alt="logo"> {{ site.name }}</a>
-      <nav>
-        <a href="/products/index.html">Products</a>
-        <a href="/blog/index.html">Blog</a>
-        <button class="toggle" onclick="toggleTheme()">🌗</button>
-      </nav>
+    <div class="container">
+      <div class="header-content">
+        <a class="brand" href="/">
+          <img src="/assets/logo.svg" alt="{{ site.name }} Logo"> 
+          {{ site.name }}
+        </a>
+        <nav>
+          <a href="/products/index.html">Products</a>
+          <a href="/blog/index.html">Blog</a>
+          <button class="toggle" onclick="toggleTheme()" title="Toggle theme">
+            🌗
+          </button>
+        </nav>
+      </div>
     </div>
   </header>
+
+  <!-- Main Content -->
   <main class="container">
     {{ content|safe }}
   </main>
+
+  <!-- Footer -->
   <footer>
-    <div class="container">© {{ year }} • {{ site.name }} • <a href="mailto:{{ site.email }}">{{ site.email }}</a></div>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>{{ site.name }}</h4>
+          <p class="muted">{{ site.tagline }}</p>
+          <p class="muted">Updated daily with the latest products from trusted partners.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <a href="/products/index.html">All Products</a>
+          <a href="/blog/index.html">Blog</a>
+          <a href="/rss.xml">RSS Feed</a>
+          <a href="/sitemap.xml">Sitemap</a>
+        </div>
+        <div class="footer-section">
+          <h4>Contact</h4>
+          <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+          <p class="muted">Have questions? We're here to help!</p>
+        </div>
+        <div class="footer-section">
+          <h4>About</h4>
+          <p class="muted">We partner with trusted vendors to bring you the best products at competitive prices. All purchases are processed securely through our partner sites.</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; {{ year }} {{ site.name }}. All rights reserved. | 
+        <a href="#privacy">Privacy Policy</a> | 
+        <a href="#terms">Terms of Service</a></p>
+      </div>
+    </div>
   </footer>
+
+  <!-- Enhanced Search Script -->
+  <script>
+    // Enhanced search functionality
+    if (document.getElementById('q')) {
+      const searchInput = document.getElementById('q');
+      
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          const query = encodeURIComponent(this.value.trim());
+          if (query) {
+            window.location.href = '/products/index.html?q=' + query;
+          }
+        }
+      });
+      
+      // Focus search with / key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === '/' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+    }
+  </script>
 </body>
 </html>

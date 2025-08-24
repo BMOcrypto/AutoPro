@@ -1,26 +1,276 @@
-<h1>All Products</h1>
-<p class="muted">We redirect you to partner sites for checkout.</p>
-<div class="grid" id="plist">
+<!-- Products Header -->
+<section class="text-center mb-xl">
+  <h1>All Products</h1>
+  <p class="muted">Discover amazing products from our trusted partners. All purchases are processed securely on partner sites.</p>
+</section>
+
+<!-- Search & Filters -->
+<section class="mb-xl">
+  <div class="search mb-lg">
+    <input type="search" id="product-search" placeholder="Search products by name, brand, or category..." autocomplete="off">
+    <button class="btn secondary" onclick="clearSearch()">Clear</button>
+  </div>
+  
+  <!-- Filter Pills -->
+  <div class="text-center">
+    <button class="tag" onclick="filterProducts('all')" data-filter="all">All Products</button>
+    <button class="tag" onclick="filterProducts('audio')" data-filter="audio">Audio</button>
+    <button class="tag" onclick="filterProducts('camera')" data-filter="camera">Camera</button>
+    <button class="tag" onclick="filterProducts('charger')" data-filter="charger">Charging</button>
+    <button class="tag" onclick="filterProducts('deal')" data-filter="deal">Deals</button>
+  </div>
+</section>
+
+<!-- Sort Options -->
+<section class="mb-lg">
+  <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+    <span class="muted">Sort by:</span>
+    <select id="sort-select" onchange="sortProducts()" style="max-width: 200px;">
+      <option value="default">Default</option>
+      <option value="price-low">Price: Low to High</option>
+      <option value="price-high">Price: High to Low</option>
+      <option value="name">Name: A to Z</option>
+    </select>
+    <span class="muted" id="product-count">{{ products|length }} products</span>
+  </div>
+</section>
+
+<!-- Products Grid -->
+<div class="grid grid-3" id="products-grid">
   {% for p in products %}
-  <div class="card" data-title="{{ p.title|lower }}" data-tags="{{ '-'.join(p.tags) }}">
-    <img src="{{ p.thumbnail_url }}" alt="{{ p.title }}">
-    <h3><a href="/products/{{ p.slug }}.html">{{ p.title }}</a></h3>
-    <div class="muted">{% for t in p.tags %}<span class="tag">#{{ t }}</span>{% endfor %}</div>
-    <div class="price">{{ site.currency }}{{ p.price }}</div>
-    <a class="btn" href="{{ p.product_url }}" target="_blank" rel="noopener">Buy</a>
+  <div class="card product-card" 
+       data-title="{{ p.title|lower }}" 
+       data-tags="{{ p.tags|join(',') }}"
+       data-price="{{ p.price }}"
+       data-name="{{ p.title }}">
+    <img src="{{ p.thumbnail_url }}" alt="{{ p.title }}" loading="lazy">
+    <div>
+      <h3><a href="/products/{{ p.slug }}.html">{{ p.title }}</a></h3>
+      <p class="muted mb-md">{{ p.description[:100] }}{% if p.description|length > 100 %}...{% endif %}</p>
+      <div class="mb-md">
+        {% for tag in p.tags[:4] %}
+        <span class="tag">#{{ tag }}</span>
+        {% endfor %}
+      </div>
+      <div class="price">${{ p.price }}</div>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <a class="btn" href="{{ p.product_url }}" target="_blank" rel="noopener nofollow" style="flex: 1;">
+          Buy Now
+        </a>
+        <a class="btn secondary" href="/products/{{ p.slug }}.html" style="flex: 1;">
+          Details
+        </a>
+      </div>
+    </div>
   </div>
   {% endfor %}
 </div>
+
+<!-- No Results Message -->
+<div id="no-results" class="text-center" style="display: none;">
+  <div class="card" style="max-width: 500px; margin: 2rem auto;">
+    <h3>No products found</h3>
+    <p class="muted">Try adjusting your search terms or filters.</p>
+    <button class="btn secondary" onclick="clearSearch()">Show All Products</button>
+  </div>
+</div>
+
+<!-- Load More Button (if you implement pagination) -->
+{% if products|length >= 12 %}
+<div class="text-center mt-xl">
+  <button class="btn secondary large" onclick="loadMoreProducts()">
+    Load More Products
+  </button>
+</div>
+{% endif %}
+
 <script>
-(function(){
-  const u = new URL(window.location.href);
-  const q = (u.searchParams.get('q')||'').toLowerCase();
-  if(!q) return;
-  const cards = document.querySelectorAll('#plist .card');
-  cards.forEach(c => {
-    const t = c.getAttribute('data-title');
-    const tg = c.getAttribute('data-tags');
-    if(!(t.includes(q) || tg.includes(q))) c.style.display='none';
+// Enhanced products page functionality
+(function() {
+  const searchInput = document.getElementById('product-search');
+  const sortSelect = document.getElementById('sort-select');
+  const productGrid = document.getElementById('products-grid');
+  const noResults = document.getElementById('no-results');
+  const productCount = document.getElementById('product-count');
+  const filterButtons = document.querySelectorAll('[data-filter]');
+  
+  let allProducts = Array.from(document.querySelectorAll('.product-card'));
+  let filteredProducts = [...allProducts];
+  let currentFilter = 'all';
+  
+  // Initialize from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQuery = urlParams.get('q') || '';
+  if (initialQuery) {
+    searchInput.value = initialQuery;
+  }
+  
+  // Search functionality
+  function performSearch() {
+    const query = searchInput.value.toLowerCase().trim();
+    const filterTag = currentFilter === 'all' ? '' : currentFilter;
+    
+    filteredProducts = allProducts.filter(card => {
+      const title = card.getAttribute('data-title');
+      const tags = card.getAttribute('data-tags').toLowerCase();
+      
+      const matchesSearch = !query || title.includes(query) || tags.includes(query);
+      const matchesFilter = !filterTag || tags.includes(filterTag);
+      
+      return matchesSearch && matchesFilter;
+    });
+    
+    updateDisplay();
+    updateURL();
+  }
+  
+  // Filter functionality
+  window.filterProducts = function(filter) {
+    currentFilter = filter;
+    
+    // Update active filter button
+    filterButtons.forEach(btn => {
+      if (btn.getAttribute('data-filter') === filter) {
+        btn.style.background = 'var(--brand-light)';
+        btn.style.color = 'var(--brand)';
+        btn.style.borderColor = 'var(--brand)';
+      } else {
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.style.borderColor = '';
+      }
+    });
+    
+    performSearch();
+  };
+  
+  // Sort functionality
+  window.sortProducts = function() {
+    const sortValue = sortSelect.value;
+    
+    filteredProducts.sort((a, b) => {
+      switch (sortValue) {
+        case 'price-low':
+          return parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price'));
+        case 'price-high':
+          return parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price'));
+        case 'name':
+          return a.getAttribute('data-name').localeCompare(b.getAttribute('data-name'));
+        default:
+          return 0;
+      }
+    });
+    
+    updateDisplay();
+  };
+  
+  // Clear search
+  window.clearSearch = function() {
+    searchInput.value = '';
+    currentFilter = 'all';
+    sortSelect.value = 'default';
+    
+    // Reset filter buttons
+    filterButtons.forEach(btn => {
+      btn.style.background = '';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    });
+    document.querySelector('[data-filter="all"]').style.background = 'var(--brand-light)';
+    
+    filteredProducts = [...allProducts];
+    updateDisplay();
+    updateURL();
+  };
+  
+  // Update display
+  function updateDisplay() {
+    // Hide all products first
+    allProducts.forEach(card => card.style.display = 'none');
+    
+    // Show filtered products
+    if (filteredProducts.length > 0) {
+      filteredProducts.forEach(card => card.style.display = 'block');
+      noResults.style.display = 'none';
+      productGrid.style.display = 'grid';
+    } else {
+      noResults.style.display = 'block';
+      productGrid.style.display = 'none';
+    }
+    
+    // Update count
+    productCount.textContent = `${filteredProducts.length} products`;
+    
+    // Re-append sorted products to maintain order
+    filteredProducts.forEach(card => productGrid.appendChild(card));
+  }
+  
+  // Update URL without reload
+  function updateURL() {
+    const query = searchInput.value.trim();
+    const url = new URL(window.location);
+    
+    if (query) {
+      url.searchParams.set('q', query);
+    } else {
+      url.searchParams.delete('q');
+    }
+    
+    window.history.replaceState({}, '', url);
+  }
+  
+  // Event listeners
+  searchInput.addEventListener('input', debounce(performSearch, 300));
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      performSearch();
+    }
   });
+  
+  // Initialize display
+  if (initialQuery) {
+    performSearch();
+  } else {
+    filterProducts('all');
+  }
+  
+  // Debounce helper
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+  
+  // Load more functionality (placeholder)
+  window.loadMoreProducts = function() {
+    // Implement pagination here
+    alert('Load more functionality would be implemented here');
+  };
+  
+  // Animate cards on load
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    allProducts.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      card.style.transition = `opacity 0.5s ease ${index * 0.1}s, transform 0.5s ease ${index * 0.1}s`;
+      observer.observe(card);
+    });
+  }
 })();
 </script>
